@@ -1,0 +1,88 @@
+
+/* CSS Document */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	background: transparent; font-family: arial;
+}
+
+
+#main{margin:0 auto; width:950px;}
+    #header{float: left; width: 100%;}
+        #logo_block{float: left;width: 100%;}
+            #logo{float: left; margin-left: 406px;}
+        #menu_block{float: left; margin-top: 7px; width: 100%;}
+            #left_menu_block{float: left;background-image: URL(/i/left_menu_block.png); background-repeat: no-repeat; width:17px; height:40px;}
+            #right_menu_block{float: right;background-image: URL(/i/right_menu_block.png); background-repeat: no-repeat; width:19px; height:40px;}
+            #center_menu_block{float: left;height:40px; background-image:URl(/i/center_menu_block.png); background-repeat: repeat-x; width: 914px;}
+            #search{float: right;margin-top: 6px;}
+    #content{float: left; width:100%;min-height: 700px;margin-top: 20px;}
+        #content #for_main_page{background-color: #f0f0fa;width: 100%; height: 430px;}
+            #content #for_main_page #left_block{float: left; background-image: URL(/i/left_top.png), URL(/i/left_bott.png); background-repeat: no-repeat; background-position: top left, left bottom; width: 30px; height: 430px;}
+            #content #for_main_page #right_block{float: right; background-image: URL(/i/right_top.png) , URL(/i/right_bott.png); background-repeat: no-repeat; background-position: right top, right bottom;width: 30px; height: 430px;}
+            #content #for_main_page #center{float: left;background-image: URL(/i/svitok.png); background-repeat: no-repeat; width: 764px;height: 428px;}
+        #content #right_text_block{float: right; width: 235px; height: 103px; top:-340px; position: relative;}
+            #content #right_text_block #left_part{float: left; background-image: url(/i/left_part_of_menu_block_text.png); width: 24px; height:103px;}
+            #content #right_text_block #right_part{float: right; background-image: url(/i/right_part_of_menu_block_text.png); width: 211px; height: 103px;}
+                #content #right_text_block #right_part p{padding: 11px; color: white;font-size: 23px;}
+        #content #three_blocks{float: left;width: 100%; margin-top: -50px;}            
+#footer{float: left; width: 100%; height: 40px;margin-top: 40px; background-color: #ebebeb;}
+    #footer #copyright{float: left; font-size: 11px; color:#86857e; margin-top: 14px; margin-left: 20px;}
+    #footer #evelsoniya{float: right;font-size: 11px; margin-top: 6px;margin-right: 20px;}
+        #footer #evelsoniya a{font-size: 11px;}
+        #footer #evelsoniya #name{font-size: 15px;float: right;}
+        #footer #evelsoniya #desc{float: right;font-size: 11px;}
+        #footer #evelsoniya a{color:#86857e;}
+        
+/*модуль новостей*/
+#mdl_news_container .mdl_news_item{width: 100%;}      
+#mdl_news_container .mdl_spacer td{height: 15px;}
+#mdl_news_container .mdl_preview_img img{width: 120px;}
+        #mdl_news_container .mdl_fisrt_line{float: left;width: 100%;}
+            #mdl_news_container .mdl_headline{float: left;font-weight: bold;}
+                #mdl_news_container .mdl_headline a{color:black;}
+            #mdl_news_container .mdl_date{float: right;font-style: italic;}
+        #news_container .mdl_preview_text{float: left;} 
+#mdl_news_container #mdl_pagination{width: 100%;float: left;}
+    #mdl_news_container #mdl_pagination #mdl_before{float: left;color: #999;}
+    #mdl_news_container #mdl_pagination .mdl_pag{text-align: center;}
+    #mdl_news_container #mdl_pagination #mdl_after{float: right;color: #999;}
+#mdl_news_container_full{margin-top: 30px; margin-left: 20px;}
+    #mdl_news_container_full #mdl_line{float: left; width: 100%;}
+        #mdl_news_container_full #mdl_headline{font-size: 22px; float: left;}
+        #mdl_news_container_full #mdl_date{font-size: 14px; float: right; font-style: italic;}
+    #mdl_news_container_full #mdl_text{float: left; width: 100%;margin-top: 20px;}
+    
+/*модуль меню*/
+ul#mdl_menu_1{list-style-type: none; margin-top: 10px; float:left;padding:0;}
+    ul#mdl_menu_1 li{float: left; margin-left: 40px;height: 30px;}
+    ul#mdl_menu_1 li#mdl_active{font-weight: bold;}
+    ul#mdl_menu_1 a{color:black; text-decoration: none;}
+    ul#mdl_menu_1 a:hover{text-decoration: underline;}
+    ul.mdl_submenu_1{background-color: #ececec;display: none;position: absolute;list-style-type: none;margin-top:10px; filter: alpha(opacity=85);-khtml-opacity: 0.85;-moz-opacity: 0.85;  opacity: 0.85;}
+    ul.mdl_submenu_1 li{float: none !important; margin: 0 !important; padding:5px;height: 20px !important;font-weight: normal;}
+    ul#mdl_menu_1 li.mdl_drop:hover ul{display:block;z-index:1;}
+
+/*модуль поиска*/
+#mdl_dropdown_search{position: absolute;background-color: white;width: 202px; margin-left: 3px;display: none;border:1px solid black;}
+    #mdl_dropdown_search img{margin-left: 90px;}
+    .mdl_search_headline{width:100%; float:left; font-weight: bold;background-color: #EEE;}
+        .mdl_search_headline span{padding: 0px 5px 0px 5px;}
+    .mdl_search_results{width:100%; float:left;}
+        .mdl_search_results span{padding: 5px;float: left;}
+        .mdl_search_results a{color:black;}
+        
+/*модуль статей*/
+#mdl_news_container{}
+.mdl_headline{font-size: 26px;font-weight: bold;}

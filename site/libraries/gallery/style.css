@@ -1,0 +1,10 @@
+#mdl_gallery{}
+    #mdl_gallery .mdl_category{width: 130px;float: left;}    
+    #mdl_gallery .header{float: left; width:100%;}
+        #mdl_gallery .mdl_headline{float: left;}
+        #mdl_gallery .mdl_back{float: right; margin-top: 30px;}
+            #mdl_gallery .mdl_back a{color: black;}            
+    #mdl_gallery .mdl_image, #mdl_gallery .mdl_category{float: left; margin-top: 20px;}
+    #mdl_gallery .mdl_image{margin-right: 30px;}
+        #mdl_gallery .mdl_image img{height:150px;}
+        

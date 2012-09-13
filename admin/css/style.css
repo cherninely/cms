@@ -1,0 +1,41 @@
+
+/* CSS Document */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	background: transparent; font-family: arial;
+}
+
+#content{width: 98%;float: left;}
+
+#left_menu{padding: 5px 0 0 5px;}
+    #left_menu ul{margin: 0;padding: 0;}
+    #left_menu li{list-style :none;text-align: left;}
+    #left_menu a{color: #000;text-decoration: none;}
+    #left_menu a:hover{text-decoration: underline;}
+    #left_menu li.button a{width: 120px;height: 34px;display: block;overflow: hidden;position: relative;font-family: Arial,Helvetica,sans-serif;font-size: 21px;padding: 10px 20px 0 20px;}
+    #left_menu li.button a:hover{text-decoration: none;}
+    #left_menu li.button a span{height:44px;position:absolute;right:0;top:0;width:4px;display:block;}
+    #left_menu li.button a.box1, li.button a.box2, li.button a.box3, li.button a.box4, li.button a.box5, li.button a.box6{color :#ccc;border: solid 1px #ccc;}
+    #left_menu .dropdown{width: 242px;display: none;}
+    #left_menu .dropdown li{border: 1px solid #ccc;margin: 5px 0;padding: 4px 18px;}
+    
+    
+.ui-state-highlight{height:44px; float: left; width: 100%; border: 1px solid #fcefa1; background: #fbf9ee/*{bgColorHighlight}*/ url(../i/menu/ui-bg_glass_55_fbf9ee_1x400.png)/*{bgImgUrlHighlight}*/ 50%/*{bgHighlightXPos}*/ 50%/*{bgHighlightYPos}*/ repeat-x/*{bgHighlightRepeat}*/; color: #363636/*{fcHighlight}*/; }
+
+#cke_news_redactor{float: right; width: 60%;}
+#filelist{float: left;}
+#upload_error{display: none;color: red;}
+#uploadfiles, #deletfile{display: none;}
+#no_img{color: red; display: none;}
