@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if(!isset($_SESSION['access']) || $_SESSION['access'] == false) header('Location: /'); 
 
 /**
  *Описание файла: Контролер по работе с Галлереей
@@ -21,10 +22,8 @@ class Gallery extends CI_Controller {
                 }
             }else{
                 
-                $left_menu['data'] = $this->mdl_common->get_menu();
                 $ru_date['date'] = $this->mdl_common->russian_date();
                 $this->load->view('header');
-                $this->load->view('left_menu');
                 $this->load->view('gallery/create',$ru_date);
                 $this->load->view('footer'); 
                 
@@ -38,7 +37,6 @@ class Gallery extends CI_Controller {
         public function show(){
             
              $this->load->model('mdl_gallery');
-             $left_menu['data'] = $this->mdl_common->get_menu();
              
              if($_POST){
                 switch ($_POST['type']){
@@ -61,7 +59,6 @@ class Gallery extends CI_Controller {
              }else{
                 $content['categories'] = $this->mdl_gallery->get_categories();
                 $this->load->view('header');
-                $this->load->view('left_menu',$left_menu);
                 $this->load->view('gallery/show',$content);
                 $this->load->view('footer');   
              } 
@@ -82,7 +79,6 @@ class Gallery extends CI_Controller {
             }else{                
                 $content['data'] = $this->mdl_gallery->get_cat($cat_id);
                 $this->load->view('header');
-                $this->load->view('left_menu');
                 $this->load->view('gallery/edit',$content);
                 $this->load->view('footer');
             }
@@ -96,12 +92,20 @@ class Gallery extends CI_Controller {
             $this->load->model('mdl_gallery');
             
             if($_POST){
-                
+                switch ($_POST['type']){
+                    case 'delete_img':
+                        if($this->mdl_gallery->delete_img($_POST['id'], $_POST['suffix'])){
+                            echo 'true';
+                        }else{
+                            echo 'false';
+                        }
+                    break;  
+                }
             }else{ 
                 $content['cat_name'] = $this->mdl_gallery->get_cat_name($cat_id);
                 $content['cat_id'] = $cat_id;
+                $content['photos'] = $this->mdl_gallery->get_photos($cat_id);
                 $this->load->view('header');
-                $this->load->view('left_menu');
                 $this->load->view('gallery/photos/show',$content);
                 $this->load->view('footer');
             }
@@ -140,7 +144,6 @@ class Gallery extends CI_Controller {
                 $content['cat_name'] = $this->mdl_gallery->get_cat_name($cat_id);
                 $content['cat_id'] = $cat_id;
                 $this->load->view('header');
-                $this->load->view('left_menu');
                 $this->load->view('gallery/photos/upload',$content);
                 $this->load->view('footer');
 

@@ -9,13 +9,13 @@
     <a href="<?=base_url()?>menu/show_menu_items/<?=$data[0]['menu_id']?>/" style="float: right;" class="btn btn-danger"  >Отменить</a>
     <div style="float: right;margin-right: 20px;" class="btn" onclick="core_menu.save_menu_item()" >Сохранить</div>
     <div id="fields_with_errors1">
-       <input name="title" maxlength="40" type="text"  value="<?=$data[0]['title']?>"/>
-       <div class="help-inline" for="inputError" id="error1" style="display: none;">
-           Пожалуйста, введите название меню
-       </div> 
         <div>
             <input type="text" name="ru_title"  value="<?=$data[0]['ru_title']?>" />
-        </div>   
+        </div>
+       <input name="title" maxlength="40" type="text"  value="<?=$data[0]['title']?>"/>
+       <div class="help-inline" for="inputError" id="error1" style="display: none;">
+           Пожалуйста, введите адрес меню
+       </div>    
         <div>
             <select name="parentid">
                 <option value="0">-- станет родителем --</option>
@@ -24,22 +24,6 @@
                 <?  endforeach;?>
             </select>
         </div>
-       <div style="float: right;margin-right: 200px;">
-        <table class="table table-striped table-bordered table-condensed" cellspadding="0" cellspacing="0">
-              <thead>     
-                <tr> 
-                    <th style="text-align: center;">
-                        Тип модуля
-                    </th>
-                    <th style="text-align: center; width: 20px;">
-                        Порядок
-                    </th>        
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-        </table>
-    </div>
     </div>
    <div id="article_redactor"></div>
    <input type="hidden" name="menu_id" value="<?=$data[0]['menu_id']?>" />

@@ -1,5 +1,10 @@
-<div style="width: 100%;float: left;height: 40px;font-weight: bold; font-size: 20px;margin-top: 20px;">
-    Редактирование категории галлереи
+<script type="text/javascript">
+  $(document).ready(function(){
+    core_gallery.checkboxStyle();      
+  });
+ </script>
+ <div style="width: 100%;float: left;height: 40px;font-weight: bold; font-size: 20px;margin-top: 20px;">
+    Редактирование категории галереи
 </div>
 <form id="form" action="<?=current_url()?>/" method="post">
     <a href="<?=base_url()?>gallery/show/" style="float: right;" class="btn btn-danger"  >Отменить</a>
@@ -10,19 +15,13 @@
            Пожалуйста, введите название категории
        </div>
     </div>
-    <div>
+    <div class="checkbox">
         <label class="control-label">Опубликовать категорию ?</label>
         <div class="controls">
-            <? $published = ($data[0]['published'] == 1) ? 'checked=""' : ''; ?>
-            <? $unpublished = ($data[0]['published'] != 1) ? 'checked=""' : ''; ?>
-              <label class="radio">
-                <input type="radio" name="published" value="1" <?=$published?> >
-                Да
-              </label>
-              <label class="radio">
-                <input type="radio" name="published" value="0" <?=$unpublished?> >
-                Нет
-              </label>
+            <? $published = ($data[0]['published'] == 1) ? 'checked="checked"' : ''; ?>             
+            <div class="on_off">
+                <input type="checkbox" name="published" <?=$published?> />
+            </div>
         </div>        
     </div>
     <div id="fields_with_errors4">

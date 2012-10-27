@@ -27,16 +27,15 @@ table.dataTable td.dataTables_empty {
 	text-align: center;
 }
 
-table.dataTable tr.odd { background-color: #E2E4FF; }
-table.dataTable tr.even { background-color: white; }
+table.dataTable tr.odd { background-color: #dedfdf; }
+table.dataTable tr.even { background-color: #eeeeee; }
 
 
 /*
  * Table wrapper
  */
 .dataTables_wrapper {
-	position: relative;
-	clear: both;
+        margin-top: 70px;
 	*zoom: 1;
 }
 .dataTables_wrapper .ui-widget-header {
@@ -51,7 +50,7 @@ table.dataTable tr.even { background-color: white; }
  * Page length menu
  */
 .dataTables_length {
-	float: left;
+	float: right;
 }
 
 
@@ -60,7 +59,6 @@ table.dataTable tr.even { background-color: white; }
  */
 .dataTables_filter {
 	float: right;
-	text-align: right;
 }
 
 

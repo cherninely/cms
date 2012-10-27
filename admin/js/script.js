@@ -17,7 +17,7 @@ var core_menu = {
             },
             //Сохранение пункта меню----------------------------------------------------------
             save_menu_item:function(){
-                if($("input[name=title]").val() != 'Введите название меню'){
+                if($("input[name=title]").val() != 'Введите адресс меню'){
                     $("#form").submit();
                 }else{
                     $("#fields_with_errors1").addClass("control-group error");
@@ -64,14 +64,16 @@ var core_menu = {
                 });
             },
             //Опубликование/неопубликование пунктов меню----------------------------------------------
-            published: function(menu_item_id,published){
-                (published) ? published=0 : published=1;
-                $.post(panel_name+"menu/show_menu_items/",{type:'published', menu_item_id:menu_item_id, published:published}, function(data) {
+            published: function(id,published){
+                var clas = $("#item_"+id+" .statusColumn .statusButton").attr('class').split(' ', 2);
+                (clas[1] == 'on') ? published=0 : published=1;
+                console.log($("#item_"+id+" .statusColumn .statusButton"));
+                $.post(panel_name+"menu/show_menu_items/",{type:'published', menu_item_id:id, published:published}, function(data) {
                     if(data == 'true'){
                         if(published){
-                            $("#published_"+menu_item_id).html('<img onclick="core_menu.published('+menu_item_id+','+published+')" src="'+panel_name+'i/menu/published.png" />');
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('off').addClass('on');
                         }else{
-                            $("#published_"+menu_item_id).html('<img onclick="core_menu.published('+menu_item_id+','+published+')" src="'+panel_name+'i/menu/unpublished.png" />');                            
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('on').addClass('off');                           
                         }
                     }else{
                         
@@ -80,14 +82,15 @@ var core_menu = {
                 
             },
             //Опубликование/неопубликование меню----------------------------------------------
-            published_menu: function(menu_id,published){
-                (published) ? published=0 : published=1;
-                $.post(panel_name+"menu/show_menus/",{type:'published', menu_id:menu_id, published:published}, function(data) {
+            published_menu: function(id,published){
+                var clas = $("#item_"+id+" .statusColumn .statusButton").attr('class').split(' ', 2);
+                (clas[1] == 'on') ? published=0 : published=1;
+                $.post(panel_name+"menu/show_menus/",{type:'published', menu_id:id, published:published}, function(data) {
                     if(data == 'true'){
                         if(published){
-                            $("#published_"+menu_id).html('<img onclick="core_menu.published('+menu_id+','+published+')" src="'+panel_name+'i/menu/published.png" />');
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('off').addClass('on');
                         }else{
-                            $("#published_"+menu_id).html('<img onclick="core_menu.published('+menu_id+','+published+')" src="'+panel_name+'i/menu/unpublished.png" />');                            
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('on').addClass('off');                           
                         }
                     }else{
                         
@@ -113,7 +116,14 @@ var core_menu = {
 var core_article = {    
             //Подгрузка редактора----------------------------------------------------------
             load_ckeditor:function(id){
-                var config = {};
+                var config = {
+                    filebrowserBrowseUrl :panel_name+'js/ckeditor/filemanager/browser/default/browser.html?Connector='+panel_name+'js/ckeditor/filemanager/connectors/php/connector.php',
+                    filebrowserImageBrowseUrl : panel_name+'js/ckeditor/filemanager/browser/default/browser.html?Type=Image&Connector='+panel_name+'js/ckeditor/filemanager/connectors/php/connector.php',
+                    filebrowserFlashBrowseUrl :panel_name+'js/ckeditor/filemanager/browser/default/browser.html?Type=Flash&Connector='+panel_name+'js/ckeditor/filemanager/connectors/php/connector.php',
+                    filebrowserUploadUrl  :panel_name+'js/ckeditor/filemanager/connectors/php/upload.php?Type=File',
+                    filebrowserImageUploadUrl : panel_name+'js/ckeditor/filemanager/connectors/php/upload.php?Type=Image',
+                    filebrowserFlashUploadUrl : panel_name+'js/ckeditor/filemanager/connectors/php/upload.php?Type=Flash'
+                };
                 article_redactor = CKEDITOR.replace( id, config, $('#article_redactor').text());
             },           
             //сортировка меню-------------------------------------------------------------------------
@@ -133,14 +143,16 @@ var core_article = {
                 });
             },
             //Опубликование/неопубликование пунктов меню----------------------------------------------
-            published: function(article_id,published){
-                (published) ? published=0 : published=1;
-                $.post(panel_name+"article/show_articles/",{type:'published', article_id:article_id, published:published}, function(data) {
+            published: function(id,published){
+                var clas = $("#item_"+id+" .statusColumn .statusButton").attr('class').split(' ', 2);
+                (clas[1] == 'on') ? published=0 : published=1;
+                console.log($("#item_"+id+" .statusColumn .statusButton"));
+                $.post(panel_name+"article/show_articles/",{type:'published', article_id:id, published:published}, function(data) {
                     if(data == 'true'){
                         if(published){
-                            $("#published_"+article_id).html('<img onclick="core_article.published('+article_id+','+published+')" src="'+panel_name+'i/menu/published.png" />');
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('off').addClass('on');
                         }else{
-                            $("#published_"+article_id).html('<img onclick="core_article.published('+article_id+','+published+')" src="'+panel_name+'i/menu/unpublished.png" />');                            
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('on').addClass('off');                           
                         }
                     }else{
                         
@@ -149,7 +161,8 @@ var core_article = {
                 
             },
             //сохоранить статью----------------------------------------------
-            save_article:function(){
+            save_article:function(type){
+                $("input[name=type]").attr('value', type);
                 var article = article_redactor.getData();
                 if($("input[name=article\\[article_name\\]]").val() != 'Введите название статьи'){
                     if($("select[name=connection\\[position_id\\]]").val() != 0){
@@ -174,6 +187,10 @@ var core_article = {
                     $("#fields_with_errors1").addClass("control-group error");
                     $("#fields_with_errors1 #error").show();
                 }
+            },
+            //делаем чекбоксы красивыми----------------------------------------------
+            checkboxStyle:function(){                
+                $('.on_off :checkbox').iphoneStyle();                   
             }
 };
 
@@ -202,7 +219,7 @@ var core_news = {
                 };
                 news_part2 = CKEDITOR.replace( id, config, $('#news_redactor2').text());
             },           
-            //сортировка меню-------------------------------------------------------------------------
+            //сортировка новостей-------------------------------------------------------------------------
             load_news_sort:function(){
                 $('#sort').dataTable({
                     "aaSorting": [[ 2, "asc" ]]
@@ -218,27 +235,29 @@ var core_news = {
                     }
                 });
             },
-            //Опубликование/неопубликование пунктов меню----------------------------------------------
+            //Опубликование/неопубликование новостей----------------------------------------------
             published: function(id,published){
-                (published) ? published=0 : published=1;
+                var clas = $("#item_"+id+" .statusColumn .statusButton").attr('class').split(' ', 2);
+                (clas[1] == 'on') ? published=0 : published=1;
                 $.post(panel_name+"news/show/",{type:'published', news_item_id:id, published:published}, function(data) {
                     if(data == 'true'){
                         if(published){
-                            $("#published_"+id).html('<img onclick="core_news.published('+id+','+published+')" src="'+panel_name+'i/menu/published.png" />');
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('off').addClass('on');
                         }else{
-                            $("#published_"+id).html('<img onclick="core_news.published('+id+','+published+')" src="'+panel_name+'i/menu/unpublished.png" />');                            
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('on').addClass('off');                           
                         }
                     }else{
                         
                     }
-                });
+                });                
                 
             },
-            //сохранить статью----------------------------------------------
-            save:function(){
+            //сохранить новость----------------------------------------------
+            save:function(type){
+                $("input[name=type]").attr('value', type);
                 var news_part1_data = news_part1.getData();
                 var news_part2_data = news_part2.getData();
-                if($("input[name=article\\[article_name\\]]").val() != 'Введите название статьи'){
+                if($("input[name=news\\[name\\]]").val() != 'Введите название новости'){
                     if(news_redactor.length != 0 && news_redactor2.length != 0){
                         if($('#filelist img')){
                             $("input[name=news\\[preview_text\\]]").val(news_part1_data);
@@ -251,7 +270,7 @@ var core_news = {
                     }else{
                         $("#fields_with_errors4").addClass("control-group error");
                         $("#fields_with_errors4 #error").show()
-                    }
+                    }                    
                 }else{
                     $("#fields_with_errors1").addClass("control-group error");
                     $("#fields_with_errors1 #error").show();
@@ -341,6 +360,41 @@ var core_news = {
                         $('#filelist').html(' '); 
                     }
                 });
+            },
+            //Опубликование/неопубликование категорий новостей----------------------------------------------
+            published_cat: function(id,published){
+                var clas = $("#item_"+id+" .statusColumn .statusButton").attr('class').split(' ', 2);
+                (clas[1] == 'on') ? published=0 : published=1;
+                $.post(panel_name+"news/show_news_cats/",{type:'published', news_cat_id:id, published:published}, function(data) {
+                    if(data == 'true'){
+                        if(published){
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('off').addClass('on');
+                        }else{
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('on').addClass('off');                           
+                        }
+                    }else{
+                        
+                    }
+                });
+                
+            },            
+            //Удаление категории новости-------------------------------------------------------------------
+            delete_news_cat: function(id){
+                $.post(panel_name+"news/show_news_cats/",{type:'delete_news_cat',news_cat_id:id}, function(data) {
+                    if(data = 'true'){
+                        $("#item_"+id).fadeOut('slow');
+                    }else{
+                        
+                    }
+                });
+            },
+            //сохранить новость----------------------------------------------
+            save_cat:function(){
+                $("#form").submit(); 
+            },
+            //делаем чекбоксы красивыми----------------------------------------------
+            checkboxStyle:function(){                
+                $('.on_off :checkbox').iphoneStyle();                   
             }
             
 };
@@ -357,18 +411,19 @@ var core_gallery = {
             },
             //Опубликование/неопубликование категорий галлереи----------------------------------------------
             published: function(id,published){
-                (published) ? published=0 : published=1;
+                var clas = $("#item_"+id+" .statusColumn .statusButton").attr('class').split(' ', 2);
+                (clas[1] == 'on') ? published=0 : published=1;
                 $.post(panel_name+"gallery/show/",{type:'published', cat_item_id:id, published:published}, function(data) {
                     if(data == 'true'){
                         if(published){
-                            $("#published_"+id).html('<img onclick="core_gallery.published('+id+','+published+')" src="'+panel_name+'i/menu/published.png" />');
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('off').addClass('on');
                         }else{
-                            $("#published_"+id).html('<img onclick="core_gallery.published('+id+','+published+')" src="'+panel_name+'i/menu/unpublished.png" />');                            
+                            $("#item_"+id+" .statusColumn .statusButton").removeClass('on').addClass('off');                           
                         }
                     }else{
                         
                     }
-                });
+                });                   
                 
             },                       
             //Удаление категории галлереи-------------------------------------------------------------------
@@ -392,6 +447,7 @@ var core_gallery = {
             },
             load_gallery_script:function(){
                 
+//                    'use strict';
                     // Initialize the jQuery File Upload widget:
                     $('#fileupload').fileupload({
                         limitConcurrentUploads:1
@@ -409,6 +465,20 @@ var core_gallery = {
                             });
                         });
                 
+            },
+            //делаем чекбоксы красивыми----------------------------------------------
+            checkboxStyle:function(){                
+                $('.on_off :checkbox').iphoneStyle();                   
+            },
+            //делаем чекбоксы красивыми----------------------------------------------
+            delete_img:function(id,suffix){
+                $.post(panel_name+"gallery/show_photos/",{type:'delete_img',id:id,suffix:suffix}, function(data) {
+                    if(data = 'true'){
+                        $("#item_"+id).fadeOut('slow');
+                    }else{
+                        
+                    }
+                });
             }
     
 }

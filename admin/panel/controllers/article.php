@@ -1,4 +1,5 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+if(!isset($_SESSION['access']) || $_SESSION['access'] == false) header('Location: /'); 
 /**
  *Описание файла: Контролер по работе с Меню
  *
@@ -32,10 +33,8 @@ class Article extends CI_Controller {
             }
 
         }else{
-            $left_menu['data'] = $this->mdl_common->get_menu();
             $content['articles'] = $this->mdl_article->get_articles();
             $this->load->view('header');
-            $this->load->view('left_menu',$left_menu);
             $this->load->view('article/show_articles',$content);
             $this->load->view('footer');   
         }
@@ -46,15 +45,22 @@ class Article extends CI_Controller {
         
         $this->load->model('mdl_article');
         if($_POST){
-            if($this->mdl_article->create_article($_POST)){
-                redirect('/article/show_articles/');
+            $id = $this->mdl_article->create_article($_POST);
+            if($id){
+                switch ($_POST['type']) {
+                    case 'save':
+                        redirect('/article/show_articles/');
+                        break;
+                    case 'apply':
+                        redirect('/article/edit_article/'.$id.'/');
+                        break;
+                }
             }
         }else{
-            $left_menu['data'] = $this->mdl_common->get_menu();
+            
+            $content['menu_items_in_block'] = $this->mdl_common->get_menu_items_in_block();
             $content['positions'] = $this->mdl_article->get_positions();
-            $content['menu_items'] = $this->mdl_article->get_menu_items();
             $this->load->view('header');
-            $this->load->view('left_menu',$left_menu);
             $this->load->view('article/create_article',$content);
             $this->load->view('footer');             
         }
@@ -66,20 +72,22 @@ class Article extends CI_Controller {
         $this->load->model('mdl_article');
         
         if($_POST){
-            if(!isset ($_POST['type'])){
-                if($this->mdl_article->edit_article($_POST,$article_id)){
-                    redirect('/article/show_articles/');
+            if($this->mdl_article->edit_article($_POST,$article_id)){
+                switch ($_POST['type']) {
+                    case 'save':
+                        redirect('/article/show_articles/');
+                        break;
+                    case 'apply':
+                        redirect('/article/edit_article/'.$article_id.'/');
+                        break;
                 }
-            }else{                
-                
+                redirect('/article/show_articles/');
             }          
         }else{
-            $left_menu['data'] = $this->mdl_common->get_menu();
+            $content['menu_items_in_block'] = $this->mdl_common->get_menu_items_in_block($article_id);
             $content['positions'] = $this->mdl_article->get_positions();
             $content['article'] = $this->mdl_article->get_article($article_id);
-            $content['menu_items'] = $this->mdl_article->get_menu_items();
             $this->load->view('header');
-            $this->load->view('left_menu',$left_menu);
             $this->load->view('article/edit_article',$content);
             $this->load->view('footer');            
         }

@@ -15,10 +15,30 @@ class mdl_article extends CI_Model {
      */ 
     function get_articles(){
         
-        $this->db->select("id, article_name, published");
+        $query = $this->db->select('id')->where('module_type','article')->get('modules');
+        $article_module_id = $query->result_array();
+        
+        $this->db->select("articles.id, articles.article_name, articles.published, connections.menu_item_id");
+        $this->db->join('connections',"connections.module_id = articles.id",'left');
+        $this->db->where('connections.modules_type_id',$article_module_id[0]['id']);
         $this->db->from("articles");
         $query = $this->db->get();
-        return $query->result_array();
+        
+        $articles = $query->result_array();
+        
+        foreach($articles as $key => $article){
+            $temp_pages = json_decode($article['menu_item_id']);
+            $page_name = '';
+            if(is_array($temp_pages)){
+                foreach ($temp_pages as $page) {
+                    $query = $this->db->select('ru_title')->where('id',$page)->get('menu_items');
+                    $page_name .= implode(',', array_shift($query->result_array())).'<br/>';
+                }                
+                $articles[$key]['menu_item_id'] = $page_name;
+            }
+        }
+        
+        return $articles;
         
     }
     /**
@@ -80,10 +100,25 @@ class mdl_article extends CI_Model {
      *Описание функции: Создание новой статьи
      */
     function create_article($data_to_insert){    
+                    
+        if(!isset($data_to_insert['article']['published'])){
+            $data_to_insert['article']['published'] = 0;
+        }elseif($data_to_insert['article']['published'] == 'on'){
+            $data_to_insert['article']['published'] = 1;
+        }
+        if(!isset($data_to_insert['article']['show_headline'])){
+            $data_to_insert['article']['show_headline'] = 0;
+        }elseif($data_to_insert['article']['show_headline'] == 'on'){
+            $data_to_insert['article']['show_headline'] = 1;
+        }
+        
+        $data_to_insert['connection']['menu_item_id'] = (isset ($data_to_insert['pages'])) ? json_encode($data_to_insert['pages']) : '';
+        
         if($this->db->insert('articles',$data_to_insert['article'])){
+            $id = $this->db->insert_id();
             $data_to_insert['connection']['module_id'] = $this->db->insert_id();
             if($this->db->insert('connections',$data_to_insert['connection'])){
-                return true;
+                return $id;
             }else{
                 return false;
             }
@@ -107,10 +142,23 @@ class mdl_article extends CI_Model {
         
     }   
     /**
-     *Описание функции: Создание новой статьи
+     *Описание функции: Изменение новой статьи
      */
     function edit_article($data_to_update,$article_id){
-//        return $data_to_update;
+        
+        if(!isset($data_to_update['article']['published'])){
+            $data_to_update['article']['published'] = 0;
+        }elseif($data_to_update['article']['published'] == 'on'){
+            $data_to_update['article']['published'] = 1;
+        }
+        if(!isset($data_to_update['article']['show_headline'])){
+            $data_to_update['article']['show_headline'] = 0;
+        }elseif($data_to_update['article']['show_headline'] == 'on'){
+            $data_to_update['article']['show_headline'] = 1;
+        }        
+        
+        $data_to_update['connection']['menu_item_id'] = (isset ($data_to_update['pages'])) ? json_encode($data_to_update['pages']) : '';
+        
         $this->db->where('id',$article_id);      
         if($this->db->update('articles',$data_to_update['article'])){
             $data_to_update['connection']['module_id'] = $article_id;

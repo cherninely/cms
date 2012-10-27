@@ -1,3 +1,8 @@
+<script type="text/javascript">
+$(document).ready(function(){
+    core_gallery.load_gallery_script();
+}); 
+</script>
 <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 <script src="<?=base_url()?>js/gallery/jquery.ui.widget.js"></script>
 <!-- The Templates plugin is included to render the upload/download listings -->
@@ -13,11 +18,6 @@
 <!-- The localization script -->
 <script src="<?=base_url()?>js/gallery/locale.js"></script>
 <!-- The main application script -->
-<script type="text/javascript">
-$(document).ready(function(){
-    core_gallery.load_gallery_script();
-}); 
-</script>
 <link href="<?=base_url()?>css/jquery.fileupload-ui.css" rel="stylesheet" type="text/css">
 <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE8+ -->
 <!--[if gte IE 8]><script src="js/cors/jquery.xdr-transport.js"></script><![endif]-->
@@ -51,7 +51,7 @@ $(document).ready(function(){
             <input type="checkbox" class="toggle">
         </div>
         <div style="float: right;margin-top:-33px;;">      
-            <a href="<?=base_url()?>gallery/show/">
+            <a href="<?=base_url()?>gallery/show_photos/<?=$cat_id?>/">
             <button type="button" class="btn btn-danger">
                 <span>Назад</span>
             </button>
@@ -71,7 +71,7 @@ $(document).ready(function(){
     <div class="fileupload-loading"></div>
     <br>
     <!-- The table listing the files available for upload/download -->
-    <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+    <table style="width:100%;" role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
 </form>
 <!-- The template to display files available for upload -->
 <script id="template-upload" type="text/x-tmpl">

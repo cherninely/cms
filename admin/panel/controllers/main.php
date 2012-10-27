@@ -9,11 +9,27 @@ class Main extends CI_Controller {
 
 	public function index(){    
                         
-//            $left_menu['data'] = $this->mdl_common->get_menu();
-            $this->load->view('header');
-            $this->load->view('left_menu');
-            $this->load->view('content');
-            $this->load->view('footer');
+            if(!isset($_SESSION['access']) || $_SESSION['access'] == false){
+                
+                if( $_POST && isset ($_POST['login'])  && isset ($_POST['password'])){
+                    $this->load->model('mdl_common');
+                    $result = $this->mdl_common->login($_POST);
+                    if(!empty ($result)){
+                        $_SESSION['access'] = true;
+                        header( "Location: ".str_replace("index.php","",$_SERVER['PHP_SELF']) );
+                    }
+                }
+                
+                $this->load->view('login');
+                
+            }else{
+                
+                $this->load->view('header');
+                $this->load->view('content');
+                $this->load->view('footer');
+                
+            }
+            
             
 	}
         

@@ -3,29 +3,31 @@
         core_news.load_news_sort();
     });
 </script>
-<div style="width: 100%;float: left;height: 40px;font-weight: bold; font-size: 20px;margin-top: 20px;">
-    Все новости
+<div id="headline">
+    Все новости категории «<?=$cat_name[0]['name']?>»
+</div>
+<div id="addInShow">
+    <div id="block1"></div>
+    <div id="block2"><a href="<?=base_url()?>news/create/<?=$cat_id?>/">Создать новость</a></div>
+    <div id="block3"></div>    
 </div>
 <table id="sort" class="table table-striped table-bordered table-condensed" cellspadding="0" cellspacing="0">
-  <thead>
-      <tr>
-        <td colspan="100"><a href="<?=base_url()?>news/create/">Создать новость</a></td>
-    </tr>     
+  <thead>   
     <tr> 
-  
-        <th style="text-align: center;">
+        <th class="titleColumn current"></th>
+        <th class="titleColumn">
             Заголовок новости
         </th>
-        <th>
+        <th class="editColumn">
             Редактировать
         </th>
         <th style="text-align: center; width: 130px;">
             Дата создания
         </th>
-        <th style="text-align: center; width: 20px;">
+        <th class="statusColumn">
             Состояние
         </th>
-        <th style="text-align: center;width: 20px;">
+        <th class="deleteColumn">
             Удалить
         </th>        
     </tr>
@@ -33,20 +35,31 @@
     <tbody id="sortable">
     <?php foreach ($news as $news): ?>
     <tr id="item_<?=$news['id']?>">
-        <td style="vertical-align: middle; height: 40px;"><?=$news['name']?></td>
-        <td style="text-align: center;vertical-align: middle; width: 20px;"><a href="<?=base_url()?>news/edit/<?=$news['id'];?>/"><i class="icon-edit"></i></a></td>
+        <td class="hovered_row"><span></span></td>
+        <td class="headerColumn"><?=$news['name']?></td>
+        <td class="editColumn"><a href="<?=base_url()?>news/edit/<?=$news['id'];?>/<?=$cat_id?>/"><div class="editButton"></div></a></td>
         <td style="text-align: center;vertical-align: middle;"><?=$news['create_date']?></td>
-        <td style="text-align: center;vertical-align: middle; width: 20px;">
-            <a id="published_<?=$news['id']?>" href="#">
-                <img onclick="core_news.published(<?=$news['id']?>,<?=$news['published']?>)" src="<?=base_url()?>i/menu/<?=($news['published']) ?  'published' : 'unpublished'?>.png" />
-            </a>
+        <td class="statusColumn">
+            <div onclick="core_news.published(<?=$news['id']?>,<?=$news['published']?>)" class="statusButton <?=($news['published']) ?  'on' : 'off'?>"></div>
         </td>
-        <td style="text-align: center;vertical-align: middle;width: 20px;">
-            <a href="#">
-                    <i onclick="core_news.delete_news(<?=$news['id']?>)" class="icon-remove"></i>
-            </a>
+        <td class="deleteColumn">
+            <div class="deleteButton" onclick="$('#delete_warning .modal-footer #yes').attr('onclick','core_news.delete_news(<?=$news['id']?>)');$('#delete_warning').modal()"></div>
         </td>
     </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
+
+<div class="modal hide fade" id="delete_warning">
+  <div class="modal-header">
+    <button class="close" data-dismiss="modal">×</button>
+    <h3 style="color:red">Предупреждение!</h3>
+  </div>
+  <div class="modal-body">
+    <p>Вы уверены, что хотите удалить меню ?</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" id="yes" data-dismiss="modal" class="btn">Да, уверен</a>
+    <a href="#" data-dismiss="modal" class="btn btn-primary">Нет</a>
+  </div>
+</div>

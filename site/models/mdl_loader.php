@@ -25,14 +25,15 @@ class mdl_loader extends CI_Model {
     } 
     
     function get_modules_per_page($page){
-                
+        
+        $query = $this->db->select('id')->where('title',$page)->get('menu_items');
+        $page_id = $query->result_array();
+        
         $this->db->select("order, module_type, position_name, module_id, module_number");
         $this->db->from("connections");
-        $this->db->where("menu_item_id","all");
-        $this->db->or_where("menu_items.title",$page);
+        $this->db->like('connections.menu_item_id',$page_id[0]['id']);
         $this->db->join('positions',"connections.position_id = positions.id");
         $this->db->join('modules',"connections.modules_type_id = modules.id");
-        $this->db->join('menu_items',"connections.menu_item_id = menu_items.id",'left');
         $query = $this->db->get();
         $results = $query->result_array();
         

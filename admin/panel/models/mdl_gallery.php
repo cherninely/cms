@@ -44,6 +44,12 @@ class mdl_gallery extends CI_Model {
      */
     function create_cat($data_to_insert){
         
+        if(!isset($data_to_insert['published'])){
+            $data_to_insert['published'] = 0;
+        }elseif($data_to_insert['published'] == 'on'){
+            $data_to_insert['published'] = 1;
+        }
+        
         if($this->db->insert('gallery_cats',$data_to_insert)){
             $inserted_cat_id = $this->db->insert_id();
 //            return $this->db->insert('modules',$data_to_insert);
@@ -66,6 +72,13 @@ class mdl_gallery extends CI_Model {
      *Описание функции: Сохранение меню после редактирования
      */
     function save_cat_after_edit($data, $id){
+        
+        if(!isset($data['published'])){
+            $data['published'] = 0;
+        }elseif($data['published'] == 'on'){
+            $data['published'] = 1;
+        }
+        
         $this->db->where('id', $id);
         return $this->db->update('gallery_cats', $data);      
     }   
@@ -76,6 +89,31 @@ class mdl_gallery extends CI_Model {
         
         $query = $this->db->select('name')->from('gallery_cats')->where('id',$cat_id)->get();
         return $query->result_array();
+        
+    }    
+    /**
+     *Описание функции: Получение фото
+     */
+    function get_photos($cat_id){
+        
+        $query = $this->db->select('*')->where('parent_cat_id',$cat_id)->order_by('id','desc')->get('gallery_images');
+        return $query->result_array();
+        
+    }     
+    /**
+     *Описание функции: Удаление фото
+     */
+    function delete_img($id,$suffix){
+        
+        $file_path1 = $_SERVER['DOCUMENT_ROOT'].'/i/gallery/files/'.$id.'.'.$suffix;
+        $file_path2 = $_SERVER['DOCUMENT_ROOT'].'/i/gallery/thumbnails/'.$id.'.'.$suffix;
+        if($this->db->where('id',$id)->delete('gallery_images')){
+            if(is_file($file_path1) || is_file($file_path2)){
+                unlink($file_path1);
+                unlink($file_path2);
+                return true;
+            }
+        }
         
     } 
     

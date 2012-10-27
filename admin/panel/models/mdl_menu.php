@@ -117,7 +117,7 @@ class mdl_menu extends CI_Model {
      */
     function get_menu($menu_id){
         
-        $query = $this->db->select('menus.menu_name')->from('menus')->where('menus.id',$menu_id)->get();
+        $query = $this->db->select('menu_name, published, position_id')->where('menus.id',$menu_id)->join('connections', 'connections.module_id = menus.id','left')->get('menus');
         return $query->result_array();
         
     }    
@@ -125,8 +125,14 @@ class mdl_menu extends CI_Model {
      *Описание функции: Сохранение меню после редактирования
      */
     function save_menu_after_edit($data, $menu_id){
-        $this->db->where('id', $menu_id);
-        return $this->db->update('menus', $data);      
+                
+        if($this->db->where('id', $menu_id)->update('menus', $data['menu'])){   
+            $data['connection']['menu_item_id'] = (isset ($data['pages'])) ? json_encode($data['pages']) : '';
+            return $this->db->where('module_id',$menu_id)->update('connections',$data['connection']);
+        }else{
+            return false;
+        }
+        return $this->db;      
     }
     /**
      *Описание функции: Удаление меню
@@ -138,18 +144,16 @@ class mdl_menu extends CI_Model {
         $this->db->where('menu_items.main',1);
         $query = $this->db->get('menu_items');
         
-        if(count($query->result_array()) == 0){
-            
-            $this->db->where('menu_id', $menu_id);
-            $deleted = $this->db->delete('menu_items');
-            if($deleted){//Если были удалены все пункты меню то удаляем и само меню
-                
-                return $this->db->delete('menus', array('id' => $menu_id));
-                
+        if(count($query->result_array()) == 0){       
+            if($this->db->where('menu_id', $menu_id)->delete('menu_items')){//Если были удалены все пункты меню то удаляем и само меню                
+                if($this->db->delete('menus', array('id' => $menu_id))){
+                    return $this->db->where('module_id',$menu_id)->delete('connections');
+                }else{
+                    return false;
+                }                
             }else{
                 return false;
-            }
-            
+            }            
         }else{
             return false;
         }
@@ -213,11 +217,11 @@ class mdl_menu extends CI_Model {
      *Описание функции: Создание меню
      */
     function create_menu($data_to_insert){
-        
-        if($this->db->insert('menus',$data_to_insert)){
-            $inserted_menu_id = $this->db->insert_id();
-//            return $this->db->insert('modules',$data_to_insert);
-            return $inserted_menu_id;
+
+        if($this->db->insert('menus',$data_to_insert['menu'])){            
+            $data_to_insert['connection']['module_id'] = $this->db->insert_id();
+            $data_to_insert['connection']['menu_item_id'] = (isset ($data_to_insert['pages'])) ? json_encode($data_to_insert['pages']) : '';
+            return $this->db->insert('connections',$data_to_insert['connection']);
         }else{
             return false;
         }

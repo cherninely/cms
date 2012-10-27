@@ -1,4 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if(!isset($_SESSION['access']) || $_SESSION['access'] == false) header('Location: /'); 
 /**
  *Описание файла: Контролер по работе с Меню
  *
@@ -16,16 +17,14 @@ class Menu extends CI_Controller {
         $this->load->model('mdl_menu');
             
             if($_POST){
-                $menu_id = $this->mdl_menu->create_menu($_POST);   
-                if($menu_id){
+                if($this->mdl_menu->create_menu($_POST)){
                     redirect('/menu/show_menus/');
                 }
             }else{
-                
-                $left_menu['data'] = $this->mdl_common->get_menu();
+                $content['positions'] = $this->mdl_common->get_positions();
+                $content['menu_items_in_block'] = $this->mdl_common->get_menu_items_in_block();
                 $this->load->view('header');
-                $this->load->view('left_menu');
-                $this->load->view('menu/create_menu');
+                $this->load->view('menu/create_menu',$content);
                 $this->load->view('footer'); 
                 
             }
@@ -62,7 +61,6 @@ class Menu extends CI_Controller {
                 
                 $content['menus'] = $this->mdl_menu->get_menus() ;
                 $this->load->view('header');
-                $this->load->view('left_menu');
                 $this->load->view('menu/show_menus',$content);
                 $this->load->view('footer'); 
                 
@@ -83,8 +81,9 @@ class Menu extends CI_Controller {
                 }
             }else{                
                 $content['data'] = $this->mdl_menu->get_menu($menu_id);
+                $content['positions'] = $this->mdl_common->get_positions();
+                $content['menu_items_in_block'] = $this->mdl_common->get_menu_items_in_block($menu_id);
                 $this->load->view('header');
-                $this->load->view('left_menu');
                 $this->load->view('menu/edit_menu',$content);
                 $this->load->view('footer');
             }
@@ -128,7 +127,6 @@ class Menu extends CI_Controller {
                 $content['menu_items'] = $this->mdl_menu->get_menu_items($menu);
                 $content['page_information'] = $this->mdl_menu->get_menu_information($menu);
                 $this->load->view('header');
-                $this->load->view('left_menu');
                 $this->load->view('menu/show_menu_items', $content);
                 $this->load->view('footer');   
             }
@@ -150,7 +148,6 @@ class Menu extends CI_Controller {
                 $content['level'] = $this->mdl_menu->get_appropriate_menu_level($menu_item_id);
                 $content['parents'] = $this->mdl_menu->get_parent_menu_item($menu_item_id);
                 $this->load->view('header');
-                $this->load->view('left_menu');
                 $this->load->view('menu/create_menu_item',$content);
                 $this->load->view('footer');
             }
@@ -177,7 +174,6 @@ class Menu extends CI_Controller {
                 $content['modules'] = $this->mdl_menu->get_order_items($menu_item_id);
                 $content['parents'] = $this->mdl_menu->get_parent_menu_item($menu_id);
                 $this->load->view('header');
-                $this->load->view('left_menu');
                 $this->load->view('menu/edit_menu_item',$content);
                 $this->load->view('footer');
             }

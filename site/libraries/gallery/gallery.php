@@ -95,7 +95,7 @@ files;
         
         $tmpl = '<div id="mdl_gallery">';
         
-        $tmpl .= '<div class="mdl_headline" style="width:100%;">Галлерея</div>';
+        $tmpl .= '<div class="mdl_headline" style="width:100%;">Галерея</div>';
         
         if(!empty ($data)){
             

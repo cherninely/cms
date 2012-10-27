@@ -1,3 +1,8 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+    core_news.checkboxStyle();      
+  });
+ </script>
 <?
 function russian_date(){
     $date=explode(".", date("d.m.Y"));
@@ -29,31 +34,29 @@ function russian_date(){
     Создать новость
 </div>
 <form id="form" action="<?=current_url()?>/" method="post">
-    <a href="<?=base_url()?>news/show/" style="float: right;" class="btn btn-danger"  >Отменить</a>
-    <div style="float: right;margin-right: 20px;" class="btn" onclick="core_news.save()" >Сохранить</div>
+    <a href="<?=base_url()?>news/show/<?=$cat_id?>/" style="float: right;" class="btn btn-danger"  >Отменить</a>
+    <div style="float: right;margin-right: 20px;" class="btn" onclick="core_news.save('save')" >Сохранить</div>
+    <div style="float: right;margin-right: 20px;" class="btn" onclick="core_news.save('apply')" >Применить</div>
     <div id="fields_with_errors1">
        <input name="news[name]" maxlength="40" type="text"  value="Введите название новости" onblur="if (this.value=='') this.value='Введите название новости';" onfocus="if (this.value=='Введите название новости') this.value='';"/>
        <div class="help-inline" for="inputError" id="error" style="display: none;">
            Пожалуйста, введите название новости
        </div>
     </div>
-    <div>
+    <div class="checkbox">
         <label class="control-label">Опубликовать материал ?</label>
         <div class="controls">
-              <label class="radio">
-                <input type="radio" name="news[published]" value="1" checked="">
-                Да
-              </label>
-              <label class="radio">
-                <input type="radio" name="news[published]" value="0">
-                Нет
-              </label>
+            <div class="on_off">
+                <input type="checkbox" name="news[published]" checked="checked" />
+            </div>
         </div>        
     </div>
     <input type="hidden" name="news[preview_text]" value="" />
+    <input type="hidden" name="news[cat_id]" value="<?=$cat_id?>" />
     <input type="hidden" name="news[full_text]" value="" />
     <input type="hidden" name="news[preview_img]" value="" />
     <input type="hidden" name="news[create_date]" value="<?=russian_date()?>" />
+    <input type="hidden" name="type" value="" />
     <div id="fields_with_errors4">
         <div style="float: left; width: 100%;">Вступление новости</div>
         <div id="uploader">

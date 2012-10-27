@@ -1,5 +1,10 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+    core_gallery.checkboxStyle();      
+  });
+ </script>
 <div style="width: 100%;float: left;height: 40px;font-weight: bold; font-size: 20px;margin-top: 20px;">
-    Создать категорию галлереи
+    Создать категорию галереи
 </div>
 <form id="form" action="<?=current_url()?>/" method="post">
     <a href="<?=base_url()?>gallery/show/" style="float: right;" class="btn btn-danger"  >Отменить</a>
@@ -10,24 +15,13 @@
            Пожалуйста, введите название категории
        </div>
     </div>
-    <div>
+    <div class="checkbox">
         <label class="control-label">Опубликовать категорию ?</label>
         <div class="controls">
-              <label class="radio">
-                <input type="radio" name="published" value="1" checked="">
-                Да
-              </label>
-              <label class="radio">
-                <input type="radio" name="published" value="0">
-                Нет
-              </label>
+            <div class="on_off">
+                <input type="checkbox" name="published" checked="checked" />
+            </div>
         </div>        
     </div>
     <input type="hidden" name="create_date" value="<?=$date?>" />
-    <div id="fields_with_errors4">
-        <div id="article_redactor"></div>   
-        <div class="help-inline"  for="inputError" id="error" style="display: none;">
-           Статья не может быть пустой !
-        </div>     
-    </div>
 </form>

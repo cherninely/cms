@@ -3,26 +3,28 @@
         core_menu.load_menu_sort();
     });
 </script>
-<div style="width: 100%;float: left;height: 40px;font-weight: bold; font-size: 20px;margin-top: 20px;">
+<div id="headline">
     Все меню
 </div>
+<div id="addInShow">
+    <div id="block1"></div>
+    <div id="block2"><a href="<?=base_url()?>menu/create_menu/"><span>+</span>Добавить меню</a></div>
+    <div id="block3"></div>    
+</div>
 <table id="sort" class="table table-striped table-bordered table-condensed" cellspadding="0" cellspacing="0">
-  <thead>
-      <tr>
-        <td colspan="100"><a href="<?=base_url()?>menu/create_menu/">Добавить меню</a></td>
-    </tr>     
+  <thead>   
     <tr> 
-  
-        <th style="text-align: center;">
+        <th class="titleColumn current"></th>
+        <th class="titleColumn">
             Заголовок меню
         </th>
-        <th>
+        <th class="editColumn">
             Редактировать
         </th>
-        <th style="text-align: center; width: 20px;">
+        <th class="statusColumn">
             Состояние
         </th>  
-        <th style="text-align: center;width: 20px;">
+        <th class="deleteColumn">
             Удалить
         </th>        
     </tr>
@@ -31,24 +33,22 @@
     <?php foreach ($menus as $menu): ?>
     <?if($menu['id'] == 0) continue;?>
     <tr id="item_<?=$menu['id']?>"><!--прячем системное меню-->
-        <td style="vertical-align: middle; height: 40px;"><a href="<?=base_url()?>menu/show_menu_items/<?=$menu['id'];?>/"><?=$menu['menu_name']?></a></td>
-        <td style="text-align: center;vertical-align: middle;width: 20px;"><a href="<?=base_url()?>menu/edit_menu/<?=$menu['id'];?>/"><i class="icon-edit"></i></a></td>
-        <td style="text-align: center;vertical-align: middle; width: 20px;">
-            <a id="published_<?=$menu['id']?>" href="#">
-                <img onclick="core_menu.published_menu(<?=$menu['id']?>,<?=$menu['published']?>)" src="<?=base_url()?>i/menu/<?=($menu['published']) ?  'published' : 'unpublished'?>.png" />
-            </a>
+        <td class="hovered_row"><span></span></td>
+        <td class="headerColumn"><a href="<?=base_url()?>menu/show_menu_items/<?=$menu['id'];?>/"><?=$menu['menu_name']?></a></td>
+        <td class="editColumn"><a href="<?=base_url()?>menu/edit_menu/<?=$menu['id'];?>/"><div class="editButton"></div></a></td>
+        <td class="statusColumn">
+            <div onclick="core_menu.published_menu(<?=$menu['id']?>,<?=$menu['published']?>)" class="statusButton <?=($menu['published']) ?  'on' : 'off'?>"></div>
         </td>
-        <td style="text-align: center;vertical-align: middle;width: 20px;">
-            <a href="#">
-                    <i onclick="$('#delete_menu_warning').modal()" class="icon-remove"></i>
-            </a>
+        <td class="deleteColumn">
+            <div class="deleteButton" onclick="$('#delete_warning .modal-footer #yes').attr('onclick','core_menu.delete_menu(<?=$menu['id']?>)');$('#delete_warning').modal()"></div>
         </td>
     </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
 
-<div class="modal hide fade" id="delete_menu_warning">
+
+<div class="modal hide fade" id="delete_warning">
   <div class="modal-header">
     <button class="close" data-dismiss="modal">×</button>
     <h3 style="color:red">Предупреждение!</h3>
@@ -57,17 +57,7 @@
     <p>Вы уверены, что хотите удалить меню ?</p>
   </div>
   <div class="modal-footer">
-    <a href="#" data-dismiss="modal" onclick="core_menu.delete_menu(<?=$menu['id']?>)" class="btn">Да, уверен</a>
+    <a href="#" id="yes" data-dismiss="modal" class="btn">Да, уверен</a>
     <a href="#" data-dismiss="modal" class="btn btn-primary">Нет</a>
-  </div>
-</div>
-
-<div class="modal hide fade" id="delete_menu_error">
-  <div class="modal-header">
-    <button class="close" data-dismiss="modal">×</button>
-    <h3 style="color:red">Ошибка!</h3>
-  </div>
-  <div class="modal-body">
-    <p>Не удалось удалить меню. Возможно один из его пунктов назначен как "Главная".</p>
   </div>
 </div>
